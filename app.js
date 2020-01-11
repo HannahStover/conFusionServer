@@ -3,15 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const mongoose = require('mongoose');
 
-const Dishes = require('./models/dishes');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const dishRouter = require('./routes/dishRouter');
 const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
 
+const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url, {
   useNewUrlParser: true,
