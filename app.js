@@ -7,6 +7,7 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const passport = require('passport');
 const authenticate = require('./authenticate');
+const config = require('./config');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -15,7 +16,7 @@ const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
 
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/conFusion';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -56,21 +57,6 @@ app.use(passport.session());
 
 app.use('/', index);
 app.use('/users', users);
-
-function auth(req, res, next) {
-  console.log(req.user);
-
-  if (!req.user) {
-    let err = new Error('You are not authenticated!');
-    res.setHeader('WWW-Authenticate', 'Basic');
-    err.status = 403;
-    next(err);
-  } else {
-    next();
-  }
-}
-
-app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
