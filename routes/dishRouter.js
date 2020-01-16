@@ -20,6 +20,7 @@ dishRouter
   })
   .get((req, res, next) => {
     Dishes.find({})
+      .populate('comments.auther')
       .then(
         dishes => {
           res.json(dishes);
@@ -64,6 +65,7 @@ dishRouter
   })
   .get((req, res, next) => {
     Dishes.findById(req.params.dishId)
+      .populate('comments.author')
       .then(
         dish => {
           res.json(dish);
@@ -115,6 +117,7 @@ dishRouter
   })
   .get((req, res, next) => {
     Dishes.findById(req.params.dishId)
+      .populate('comments.author')
       .then(
         dish => {
           if (dish != null) {
@@ -134,6 +137,7 @@ dishRouter
       .then(
         dish => {
           if (dish != null) {
+            req.body.author = req.user._id;
             dish.comments.push(req.body);
             dish.save().then(
               dish => {
@@ -192,6 +196,7 @@ dishRouter
   })
   .get((req, res, next) => {
     Dishes.findById(req.params.dishId)
+      .populate('comments.author')
       .then(
         dish => {
           if (dish != null && dish.comments.id(req.params.commentId) != null) {
