@@ -80,9 +80,8 @@ dishRouter
   })
   .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403;
-    res.end(
-      'POST operation not supported on /dishes/ ' + req.params.dishId + '/'
-    );
+    res.setHeader('Content-Type', 'text/plain');
+    res.end(`POST operation not supported on /dishes/ ${req.params.dishId} /`);
   })
   .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     Dishes.findByIdAndUpdate(
@@ -239,7 +238,7 @@ dishRouter
         dish => {
           if (dish != null && dish.comments.id(req.params.commentId) != null) {
             if (req.body.rating) {
-              dish.comments.id(req.params.commentId).rating = req.body.rating;
+              dish.comments.id((req.params.commentId.rating = req.body.rating));
             }
             if (req.body.comment) {
               dish.comments.id(req.params.commentId).comment = req.body.comment;
@@ -251,12 +250,16 @@ dishRouter
               err => next(err)
             );
           } else if (dish == null) {
-            err = new Error('Dish ' + req.params.dishId + ' not found');
+            err = new Error(`Dish ${req.params.dishId} not found`);
+            err.status = 404;
+            return next(err);
+          } else if (dish.comments.id(req.params.commentId) == null) {
+            err = new Error(`Comment ${req.params.commentId} not found`);
             err.status = 404;
             return next(err);
           } else {
-            err = new Error('Comment ' + req.params.commentId + ' not found');
-            err.status = 404;
+            err = new Error('You are not authorized to update this comment.');
+            err.status = 403;
             return next(err);
           }
         },
