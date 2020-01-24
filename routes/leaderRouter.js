@@ -21,7 +21,7 @@ leaderRouter
     next();
   })
   .get(cors.cors, (req, res, next) => {
-    Leaders.find({})
+    Leaders.find(req.query)
       .then(
         leaders => {
           res.json(leaders);

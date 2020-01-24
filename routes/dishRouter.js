@@ -23,7 +23,7 @@ dishRouter
     next();
   })
   .get(cors.cors, (req, res, next) => {
-    Dishes.find({})
+    Dishes.find(req.query)
       .populate('comments.auther')
       .then(
         dishes => {
