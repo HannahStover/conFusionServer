@@ -23,7 +23,7 @@ const commentSchema = new Schema(
     }
   },
   {
-    timestames: true
+    timestamps: true
   }
 );
 

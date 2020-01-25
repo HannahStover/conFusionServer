@@ -17,7 +17,7 @@ commentRouter
   })
   .get(cors.cors, (req, res, next) => {
     Comments.find(req.query)
-      .populate('auther')
+      .populate('author')
       .then(
         comments => {
           res.statusCode = 200;
@@ -30,11 +30,11 @@ commentRouter
   })
   .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     if (req.body != null) {
-      req.body.auther = req.user._id;
+      req.body.author = req.user._id;
       Comments.create(req.body).then(
         comment => {
           Comments.findById(comment._id)
-            .populate('auther')
+            .populate('author')
             .then(comment => {
               res.statusCode = 200;
               res.setHeader('Content-Type', 'application/json');
