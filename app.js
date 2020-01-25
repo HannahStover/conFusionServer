@@ -14,7 +14,7 @@ const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
 const uploadRouter = require('./routes/uploadRouter');
 const commentRouter = require('./routes/commentRouter');
-const favoritesRouter = require('./routes/favoritesRouter');
+const favoritesRouter = require('./routes/favoriteRouter');
 
 const mongoose = require('mongoose');
 const url = config.mongoUrl;
